@@ -31,7 +31,7 @@ Go into your TipTap editor, write `` ```ts ``, press <kbd>Enter</kbd>, and write
 
 ## Demo
 
-I posted a small screen recodring here: https://mastodon.social/@timomeh/112282962825285237
+I posted a small screen recording here: https://mastodon.social/@timomeh/112282962825285237
 
 ## Settings
 

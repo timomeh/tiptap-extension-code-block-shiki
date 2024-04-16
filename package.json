@@ -18,7 +18,8 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test": "echo 'No tests defined, soz'"
   },
   "devDependencies": {
     "@tiptap/core": "^2.3.0",

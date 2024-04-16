@@ -1,6 +1,6 @@
-# Shiki TipTap Extension
+# Shiki Tiptap Extension
 
-Use [Shiki](https://shiki.style/) syntax highlighting for codeblocks in [TipTap](https://tiptap.dev/).
+Use [Shiki](https://shiki.style/) syntax highlighting for codeblocks in [Tiptap](https://tiptap.dev/).
 
 ## Installation
 
@@ -55,5 +55,5 @@ When you use a language which isn't supported by Shiki, it silently falls back t
 
 Most of this library is just combining code from two other libraries:
 
-- [`@tiptap/extension-code-block-lowlight`](https://github.com/ueberdosis/tiptap/tree/main/packages/extension-code-block-lowlight) by [TipTap](https://tiptap.dev)
+- [`@tiptap/extension-code-block-lowlight`](https://github.com/ueberdosis/tiptap/tree/main/packages/extension-code-block-lowlight) by [Tiptap](https://tiptap.dev)
 - [`prosemirror-highlight`](https://github.com/ocavue/prosemirror-highlight) by [ocavue](https://github.com/ocavue)

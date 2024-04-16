@@ -5,6 +5,7 @@ import pkg from './package.json'
 
 export default defineConfig({
   build: {
+    copyPublicDir: false,
     lib: {
       entry: resolve(__dirname, 'lib/index.ts'),
       formats: ['es', 'cjs'],

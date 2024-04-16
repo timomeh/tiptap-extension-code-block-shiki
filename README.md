@@ -29,6 +29,10 @@ new Editor({
 
 Go into your TipTap editor, write `` ```ts ``, press <kbd>Enter</kbd>, and write some code! It loads the language on the fly.
 
+## Demo
+
+I posted a small screen recodring here: https://mastodon.social/@timomeh/112282962825285237
+
 ## Settings
 
 The extension extends [CodeBlock](https://tiptap.dev/docs/editor/api/nodes/code-block) and forwards its settings. It additionally adds the following settings:

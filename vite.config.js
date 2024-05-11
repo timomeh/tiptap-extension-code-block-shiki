@@ -17,4 +17,7 @@ export default defineConfig({
     },
   },
   plugins: [dts({ rollupTypes: true })],
+  test: {
+    environment: 'happy-dom',
+  },
 })

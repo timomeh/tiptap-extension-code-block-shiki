@@ -19,6 +19,13 @@ type HighlighterOptions = {
   languages: (BundledLanguage | null | undefined)[]
 }
 
+export function resetHighlighter() {
+  highlighter = undefined
+  highlighterPromise = undefined
+  loadingLanguages.clear()
+  loadingThemes.clear()
+}
+
 export function getShiki() {
   return highlighter
 }

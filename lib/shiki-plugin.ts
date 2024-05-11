@@ -1,72 +1,21 @@
-import {
-  getHighlighter,
-  Highlighter,
-  BundledLanguage,
-  BundledTheme,
-  bundledLanguages,
-  bundledThemes,
-} from 'shiki'
+import { BundledLanguage, BundledTheme } from 'shiki'
 import { findChildren } from '@tiptap/core'
-import { Node as ProsemirrorNode } from '@tiptap/pm/model'
-import { Plugin, PluginKey } from '@tiptap/pm/state'
+import { Plugin, PluginKey, PluginView } from '@tiptap/pm/state'
 import { Decoration, DecorationSet } from '@tiptap/pm/view'
+import { Node as ProsemirrorNode } from '@tiptap/pm/model'
+import {
+  getShiki,
+  initHighlighter,
+  loadLanguage,
+  loadTheme,
+} from './highlighter'
 
-// This whole file is basically throwing code from two libraries at each other:
-// - https://github.com/ueberdosis/tiptap/tree/main/packages/extension-code-block-lowlight by tiptap
-// - https://github.com/ocavue/prosemirror-highlight
-// I really didn't do more than just mashing both together.
-
-let highlighterPromise: Promise<void> | undefined
-let highlighter: Highlighter | undefined
-const loadedLanguages = new Set<BundledLanguage>()
-const loadedThemes = new Set<BundledTheme>()
-
-type HighlighterOptions = {
-  theme?: BundledTheme
-  language?: BundledLanguage
-  defaultTheme: BundledTheme
-}
-
-const lazyHighlighter = (opts: HighlighterOptions) => {
-  if (!highlighterPromise) {
-    highlighterPromise = getHighlighter({
-      themes: [opts.defaultTheme],
-      langs: [],
-    }).then((h) => {
-      loadedThemes.add(opts.defaultTheme)
-      highlighter = h
-    })
-    return highlighterPromise
-  }
-
-  if (!highlighter) {
-    return highlighterPromise
-  }
-
-  const language = opts.language
-  if (
-    language &&
-    !loadedLanguages.has(language) &&
-    language in bundledLanguages
-  ) {
-    return highlighter.loadLanguage(language).then(() => {
-      loadedLanguages.add(language)
-    })
-  }
-
-  const theme = opts.theme
-  if (theme && !loadedThemes.has(theme) && theme in bundledThemes) {
-    return highlighter.loadTheme(theme).then(() => {
-      loadedThemes.add(theme)
-    })
-  }
-}
-
+/** Create code decorations for the current document */
 function getDecorations({
   doc,
   name,
-  defaultLanguage,
   defaultTheme,
+  defaultLanguage,
 }: {
   doc: ProsemirrorNode
   name: string
@@ -75,21 +24,28 @@ function getDecorations({
 }) {
   const decorations: Decoration[] = []
 
-  findChildren(doc, (node) => node.type.name === name).forEach((block) => {
+  const codeBlocks = findChildren(doc, (node) => node.type.name === name)
+
+  codeBlocks.forEach((block) => {
     let from = block.pos + 1
     let language = block.node.attrs.language || defaultLanguage
     let theme = block.node.attrs.theme || defaultTheme
-    lazyHighlighter({ language, theme, defaultTheme })
 
-    if (!loadedLanguages.has(language)) {
+    const highlighter = getShiki()
+
+    if (!highlighter) return
+
+    if (!highlighter.getLoadedLanguages().includes(language)) {
       language = 'plaintext'
     }
 
-    if (!highlighter) return block.node
+    const themeToApply = highlighter.getLoadedThemes().includes(theme)
+      ? theme
+      : highlighter.getLoadedThemes()[0]
 
     const tokens = highlighter.codeToTokensBase(block.node.textContent, {
       lang: language,
-      theme,
+      theme: themeToApply,
     })
 
     for (const line of tokens) {
@@ -124,14 +80,67 @@ export function ShikiPlugin({
   const shikiPlugin: Plugin<any> = new Plugin({
     key: new PluginKey('shiki'),
 
+    view(view) {
+      // This small view is just for initial async handling
+      class ShikiPluginView implements PluginView {
+        constructor() {
+          this.initDecorations()
+        }
+
+        update() {
+          this.checkUndecoratedBlocks()
+        }
+        destroy() {}
+
+        // Initialize shiki async, and then highlight initial document
+        async initDecorations() {
+          const doc = view.state.doc
+          await initHighlighter({ doc, name, defaultLanguage, defaultTheme })
+          const tr = view.state.tr.setMeta('shikiPluginForceDecoration', true)
+          view.dispatch(tr)
+        }
+
+        // When new codeblocks were added and they have missing themes or
+        // languages, load those and then add code decorations once again.
+        async checkUndecoratedBlocks() {
+          const codeBlocks = findChildren(
+            view.state.doc,
+            (node) => node.type.name === name,
+          )
+
+          // Load missing themes or languages when necessary.
+          // loadStates is an array with booleans depending on if a theme/lang
+          // got loaded.
+          const loadStates = await Promise.all(
+            codeBlocks.flatMap((block) => [
+              loadTheme(block.node.attrs.theme),
+              loadLanguage(block.node.attrs.language),
+            ]),
+          )
+          const didLoadSomething = loadStates.includes(true)
+
+          // The asynchronous nature of this is potentially prone to
+          // race conditions. Imma just hope it's fine lol
+
+          if (didLoadSomething) {
+            const tr = view.state.tr.setMeta('shikiPluginForceDecoration', true)
+            view.dispatch(tr)
+          }
+        }
+      }
+
+      return new ShikiPluginView()
+    },
+
     state: {
-      init: (_, { doc }) =>
-        getDecorations({
+      init: (_, { doc }) => {
+        return getDecorations({
           doc,
           name,
           defaultLanguage,
           defaultTheme,
-        }),
+        })
+      },
       apply: (transaction, decorationSet, oldState, newState) => {
         const oldNodeName = oldState.selection.$head.parent.type.name
         const newNodeName = newState.selection.$head.parent.type.name
@@ -144,7 +153,7 @@ export function ShikiPlugin({
           (node) => node.type.name === name,
         )
 
-        if (
+        const didChangeSomeCodeBlock =
           transaction.docChanged &&
           // Apply decorations if:
           // selection includes named node,
@@ -172,6 +181,11 @@ export function ShikiPlugin({
                 })
               )
             }))
+
+        // only create code decoration when it's necessary to do so
+        if (
+          transaction.getMeta('shikiPluginForceDecoration') ||
+          didChangeSomeCodeBlock
         ) {
           return getDecorations({
             doc: transaction.doc,

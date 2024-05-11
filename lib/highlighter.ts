@@ -116,8 +116,8 @@ export async function initHighlighter({
     await loader
   } else {
     await Promise.all([
-      themes.forEach((theme) => loadTheme(theme)),
-      languages.forEach((language) => !!language && loadLanguage(language)),
+      ...themes.flatMap((theme) => loadTheme(theme)),
+      ...languages.flatMap((language) => !!language && loadLanguage(language)),
     ])
   }
 }

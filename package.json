@@ -12,8 +12,7 @@
   "files": [
     "dist"
   ],
-  "main": "./dist/tiptap-extension-code-block-shiki.cjs",
-  "module": "./dist/tiptap-extension-code-block-shiki.js",
+  "main": "./dist/tiptap-extension-code-block-shiki.js",
   "types": "./dist/tiptap-extension-code-block-shiki.d.ts",
   "scripts": {
     "dev": "vite",

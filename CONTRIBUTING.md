@@ -2,9 +2,9 @@
 
 ## Contribute with PRs
 
-First for all, thanks for contributing! To contribue code, open a Pull Request with your changes.
+First of all, thanks for contributing! To contribute code, open a pull request with your changes.
 
-I'd kindly ask you to not format existing code, like adding semicolons or changing single quotes to double quotes everywhere. If you contribute code, focus on your changes, and nothing else.
+I'd like to ask you not to format existing code, like adding semicolons or changing single quotes to double quotes everywhere. When contributing code, focus on your changes and nothing else.
 
 ## Developing locally
 

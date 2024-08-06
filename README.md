@@ -49,17 +49,17 @@ Which language to use, when no language was provided. See https://shiki.style/la
 
 ### Lazy loading
 
-The library loads themes and languages asynchronously. You may see that the code is not highlighted for a short moment, while the theme and language is loading.
+The library loads themes and languages asynchronously. You may notice that the code is not highlighted for a short moment while the theme and language are loading.
 
 ### Unknown language fallback
 
-When you use a language which isn't supported by Shiki, it silently falls back to no syntax highlighting.
+If you use a language that Shiki doesn't support, it will silently switch to no syntax highlighting.
 
 ## [Contributing](CONTRIBUTING.md)
 
 ## Credits
 
-Most of this library is just combining code from two other libraries:
+Most of this library is just a combination of code from two other libraries:
 
 - [`@tiptap/extension-code-block-lowlight`](https://github.com/ueberdosis/tiptap/tree/main/packages/extension-code-block-lowlight) by [Tiptap](https://tiptap.dev)
 - [`prosemirror-highlight`](https://github.com/ocavue/prosemirror-highlight) by [ocavue](https://github.com/ocavue)

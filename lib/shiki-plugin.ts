@@ -43,6 +43,14 @@ function getDecorations({
       ? theme
       : highlighter.getLoadedThemes()[0]
 
+    const themeResolved = highlighter.getTheme(themeToApply)
+
+    decorations.push(
+      Decoration.node(block.pos, block.pos + block.node.nodeSize, {
+        style: `background-color: ${themeResolved.bg}`,
+      }),
+    )
+
     const tokens = highlighter.codeToTokensBase(block.node.textContent, {
       lang: language,
       theme: themeToApply,

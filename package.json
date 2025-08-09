@@ -1,6 +1,6 @@
 {
   "name": "tiptap-extension-code-block-shiki",
-  "version": "0.5.1",
+  "version": "0.6.0",
   "description": "Use Shiki syntax highlighting for codeblocks in TipTap.",
   "repository": "timomeh/tiptap-extension-code-block-shiki",
   "author": {

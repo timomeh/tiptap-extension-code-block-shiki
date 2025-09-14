@@ -92,3 +92,17 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+
+/*
+TODO: the light/dark mode CSS cannot be included in the library, because
+there are different ways to implement light/dark mode.
+This code snippet must be added by the developer into their CSS.
+It should be added to the readme, with a reference to: https://shiki.matsu.io/guide/dual-themes
+*/
+@media (prefers-color-scheme: dark) {
+  .tiptap .shiki,
+  .tiptap .shiki span {
+    color: var(--shiki-dark) !important;
+    background-color: var(--shiki-dark-bg) !important;
+  }
+}

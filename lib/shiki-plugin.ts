@@ -9,6 +9,7 @@ import {
   loadLanguage,
   loadTheme,
 } from './highlighter'
+import { styleToHtml } from './html-styles'
 
 /** Create code decorations for the current document */
 function getDecorations({
@@ -21,6 +22,7 @@ function getDecorations({
   name: string
   defaultLanguage: BundledLanguage | null | undefined
   defaultTheme: BundledTheme
+  // TODO: pass through new optional dual themes config
 }) {
   const decorations: Decoration[] = []
 
@@ -29,6 +31,10 @@ function getDecorations({
   codeBlocks.forEach((block) => {
     let from = block.pos + 1
     let language = block.node.attrs.language || defaultLanguage
+
+    // TODO: the theme can be specified for each block, similar to how a language
+    // can be specified for each block.
+    // The `node.attrs` needs to support dual themes as well.
     let theme = block.node.attrs.theme || defaultTheme
 
     const highlighter = getShiki()
@@ -43,25 +49,41 @@ function getDecorations({
       ? theme
       : highlighter.getLoadedThemes()[0]
 
-    const themeResolved = highlighter.getTheme(themeToApply)
+    const tokens = highlighter.codeToTokens(block.node.textContent, {
+      lang: language,
+
+      // TODO: dual-theme should be optional. It should still support single theme
+      // if the tiptap extension isn't initialized with dual themes.
+      // theme: themeToApply,
+
+      themes: {
+        dark: themeToApply,
+
+        // TODO: needs to be configurable, similar to `themeToApply`:
+        // from `block.node.attrs` for the block's configuration, or from the
+        // default theme option if there's no block configuration.
+        // 'github-light' is currently hardcoded for testing purposes.
+        light: 'github-light',
+      },
+    })
+
+    const blockStyle: { [prop: string]: string } = {}
+    if (tokens.bg) blockStyle['background-color'] = tokens.bg
+    if (tokens.fg) blockStyle['color'] = tokens.fg
 
     decorations.push(
       Decoration.node(block.pos, block.pos + block.node.nodeSize, {
-        style: `background-color: ${themeResolved.bg}`,
+        style: styleToHtml(blockStyle),
+        class: 'shiki',
       }),
     )
 
-    const tokens = highlighter.codeToTokensBase(block.node.textContent, {
-      lang: language,
-      theme: themeToApply,
-    })
-
-    for (const line of tokens) {
+    for (const line of tokens.tokens) {
       for (const token of line) {
         const to = from + token.content.length
 
         const decoration = Decoration.inline(from, to, {
-          style: `color: ${token.color}`,
+          style: styleToHtml(token.htmlStyle || {}),
         })
 
         decorations.push(decoration)
@@ -121,7 +143,7 @@ export function ShikiPlugin({
           // got loaded.
           const loadStates = await Promise.all(
             codeBlocks.flatMap((block) => [
-              loadTheme(block.node.attrs.theme),
+              loadTheme(block.node.attrs.theme), // TODO: load dual themes from block attrs.
               loadLanguage(block.node.attrs.language),
             ]),
           )

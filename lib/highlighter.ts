@@ -119,7 +119,13 @@ export async function initHighlighter({
   ]
 
   if (!highlighter) {
-    const loader = loadHighlighter({ languages, themes })
+    const loader = loadHighlighter({
+      languages,
+
+      // TODO: The highlighter needs to be loaded with all themes: light and dark.
+      // 'github-light' is currently hard-coded for testing purposes.
+      themes: ['github-light', ...themes],
+    })
     await loader
   } else {
     await Promise.all([

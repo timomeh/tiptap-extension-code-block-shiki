@@ -9,7 +9,10 @@ const editor = new Editor({
   element: document.querySelector('#editor')!,
   extensions: [
     StarterKit.configure({ codeBlock: false }),
-    CodeBlockShiki.configure({ defaultTheme: 'tokyo-night' }),
+    CodeBlockShiki.configure({
+      defaultTheme: 'tokyo-night',
+      // TODO: add an option for dual themes (light/dark)
+    }),
   ],
   content: `<p>Hello World!</p><pre><code class="language-ts">function foo() {
   return 'bar'

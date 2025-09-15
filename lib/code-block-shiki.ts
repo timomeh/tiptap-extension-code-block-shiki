@@ -6,9 +6,10 @@ import { ShikiPlugin } from './shiki-plugin.ts'
 export interface CodeBlockShikiOptions extends CodeBlockOptions {
   defaultLanguage: BundledLanguage | null | undefined
   defaultTheme: BundledTheme
-  // TODO: add support for default dual themes.
-  // Adding dual themes should not be a breaking change; `defaultTheme` should
-  // continue to work like it always did.
+  themes: {
+    light: BundledTheme,
+    dark: BundledTheme
+  } | null | undefined
 }
 
 export const CodeBlockShiki = CodeBlock.extend<CodeBlockShikiOptions>({
@@ -27,6 +28,7 @@ export const CodeBlockShiki = CodeBlock.extend<CodeBlockShikiOptions>({
         name: this.name,
         defaultLanguage: this.options.defaultLanguage,
         defaultTheme: this.options.defaultTheme,
+        themes: this.options.themes
       }),
     ]
   },

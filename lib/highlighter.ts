@@ -101,11 +101,16 @@ export async function initHighlighter({
   name,
   defaultTheme,
   defaultLanguage,
+  themeModes
 }: {
   doc: ProsemirrorNode
   name: string
   defaultLanguage: BundledLanguage | null | undefined
   defaultTheme: BundledTheme
+  themeModes: {
+    light: BundledTheme,
+    dark: BundledTheme,
+  } | null | undefined
 }) {
   const codeBlocks = findChildren(doc, (node) => node.type.name === name)
 
@@ -119,12 +124,21 @@ export async function initHighlighter({
   ]
 
   if (!highlighter) {
+
+
+    const themesToLoad: BundledTheme[] = [...themes]
+    if (themeModes) {
+      if (themeModes.light && !themesToLoad.includes(themeModes.light)) {
+        themesToLoad.push(themeModes.light)
+      }
+      if (themeModes.dark && !themesToLoad.includes(themeModes.dark)) {
+        themesToLoad.push(themeModes.dark)
+      }
+    }
+
     const loader = loadHighlighter({
       languages,
-
-      // TODO: The highlighter needs to be loaded with all themes: light and dark.
-      // 'github-light' is currently hard-coded for testing purposes.
-      themes: ['github-light', ...themes],
+      themes: themesToLoad
     })
     await loader
   } else {

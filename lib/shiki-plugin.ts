@@ -1,5 +1,5 @@
-import { BundledLanguage, BundledTheme } from 'shiki'
-import { findChildren } from '@tiptap/core'
+import { BundledLanguage, BundledTheme, CodeToTokensWithThemesOptions } from 'shiki'
+import { NodeWithPos, findChildren } from '@tiptap/core'
 import { Plugin, PluginKey, PluginView } from '@tiptap/pm/state'
 import { Decoration, DecorationSet } from '@tiptap/pm/view'
 import { Node as ProsemirrorNode } from '@tiptap/pm/model'
@@ -17,12 +17,16 @@ function getDecorations({
   name,
   defaultTheme,
   defaultLanguage,
+  themes,
 }: {
   doc: ProsemirrorNode
   name: string
   defaultLanguage: BundledLanguage | null | undefined
   defaultTheme: BundledTheme
-  // TODO: pass through new optional dual themes config
+  themes: {
+    light: BundledTheme,
+    dark: BundledTheme,
+  } | null | undefined
 }) {
   const decorations: Decoration[] = []
 
@@ -32,10 +36,9 @@ function getDecorations({
     let from = block.pos + 1
     let language = block.node.attrs.language || defaultLanguage
 
-    // TODO: the theme can be specified for each block, similar to how a language
-    // can be specified for each block.
-    // The `node.attrs` needs to support dual themes as well.
     let theme = block.node.attrs.theme || defaultTheme
+    let lightTheme = block.node.attrs.themes?.light || themes?.light
+    let darkTheme = block.node.attrs.themes?.dark || themes?.dark
 
     const highlighter = getShiki()
 
@@ -45,27 +48,37 @@ function getDecorations({
       language = 'plaintext'
     }
 
-    const themeToApply = highlighter.getLoadedThemes().includes(theme)
-      ? theme
-      : highlighter.getLoadedThemes()[0]
+    const getThemeToApply = (theme: string): BundledTheme => {
+      if (highlighter.getLoadedThemes().includes(theme)) {
+        return theme as BundledTheme
+      } else {
+        return highlighter.getLoadedThemes()[0] as BundledTheme
+      }
+    }
 
-    const tokens = highlighter.codeToTokens(block.node.textContent, {
-      lang: language,
+    let options: CodeToTokensWithThemesOptions<BundledLanguage, BundledTheme>
 
-      // TODO: dual-theme should be optional. It should still support single theme
-      // if the tiptap extension isn't initialized with dual themes.
-      // theme: themeToApply,
+    if (themes) {
 
-      themes: {
-        dark: themeToApply,
+      options = {
+        lang: language,
+        themes: {
+          light: getThemeToApply(lightTheme),
+          dark: getThemeToApply(darkTheme),
+        },
+      }
+    } else {
+      options = {
+        lang: language,
+        themes: {
+          light: getThemeToApply(theme),
+          dark: getThemeToApply(theme),
+        }
+      }
+    }
 
-        // TODO: needs to be configurable, similar to `themeToApply`:
-        // from `block.node.attrs` for the block's configuration, or from the
-        // default theme option if there's no block configuration.
-        // 'github-light' is currently hardcoded for testing purposes.
-        light: 'github-light',
-      },
-    })
+
+    const tokens = highlighter.codeToTokens(block.node.textContent, options)
 
     const blockStyle: { [prop: string]: string } = {}
     if (tokens.bg) blockStyle['background-color'] = tokens.bg
@@ -102,10 +115,15 @@ export function ShikiPlugin({
   name,
   defaultLanguage,
   defaultTheme,
+  themes,
 }: {
   name: string
   defaultLanguage: BundledLanguage | null | undefined
   defaultTheme: BundledTheme
+  themes: {
+    light: BundledTheme,
+    dark: BundledTheme
+  } | null | undefined
 }) {
   const shikiPlugin: Plugin<any> = new Plugin({
     key: new PluginKey('shiki'),
@@ -120,12 +138,12 @@ export function ShikiPlugin({
         update() {
           this.checkUndecoratedBlocks()
         }
-        destroy() {}
+        destroy() { }
 
         // Initialize shiki async, and then highlight initial document
         async initDecorations() {
           const doc = view.state.doc
-          await initHighlighter({ doc, name, defaultLanguage, defaultTheme })
+          await initHighlighter({ doc, name, defaultLanguage, defaultTheme, themeModes: themes })
           const tr = view.state.tr.setMeta('shikiPluginForceDecoration', true)
           view.dispatch(tr)
         }
@@ -138,14 +156,27 @@ export function ShikiPlugin({
             (node) => node.type.name === name,
           )
 
+          const loaderFns = (block: NodeWithPos): Promise<Boolean>[] => {
+            const fns = [
+              loadLanguage(block.node.attrs.language),
+            ]
+
+            if (themes) {
+              fns.push(loadTheme(block.node.attrs.themes?.light || themes.light))
+              fns.push(loadTheme(block.node.attrs.themes?.dark || themes.dark))
+            } else {
+              fns.push(loadTheme(block.node.attrs.theme))
+            }
+
+            return fns
+          }
+
+
           // Load missing themes or languages when necessary.
           // loadStates is an array with booleans depending on if a theme/lang
           // got loaded.
           const loadStates = await Promise.all(
-            codeBlocks.flatMap((block) => [
-              loadTheme(block.node.attrs.theme), // TODO: load dual themes from block attrs.
-              loadLanguage(block.node.attrs.language),
-            ]),
+            codeBlocks.flatMap((block) => loaderFns(block)),
           )
           const didLoadSomething = loadStates.includes(true)
 
@@ -169,6 +200,7 @@ export function ShikiPlugin({
           name,
           defaultLanguage,
           defaultTheme,
+          themes: themes
         })
       },
       apply: (transaction, decorationSet, oldState, newState) => {
@@ -222,6 +254,7 @@ export function ShikiPlugin({
             name,
             defaultLanguage,
             defaultTheme,
+            themes
           })
         }
 

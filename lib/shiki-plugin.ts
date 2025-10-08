@@ -60,21 +60,18 @@ function getDecorations({
 
     if (themes) {
 
-      options = {
+      const tokens = highlighter.codeToTokens(block.node.textContent, {
         lang: language,
         themes: {
           light: getThemeToApply(lightTheme),
           dark: getThemeToApply(darkTheme),
         },
-      }
+      })
     } else {
-      options = {
+      const tokens = highlighter.codeToTokensBase(block.node.textContent, {
         lang: language,
-        themes: {
-          light: getThemeToApply(theme),
-          dark: getThemeToApply(theme),
-        }
-      }
+        theme: getThemeToApply(theme),
+      })
     }
 
 

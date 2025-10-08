@@ -1,4 +1,4 @@
-import { BundledLanguage, BundledTheme, CodeToTokensWithThemesOptions } from 'shiki'
+import { BundledLanguage, BundledTheme } from 'shiki'
 import { NodeWithPos, findChildren } from '@tiptap/core'
 import { Plugin, PluginKey, PluginView } from '@tiptap/pm/state'
 import { Decoration, DecorationSet } from '@tiptap/pm/view'
@@ -23,10 +23,13 @@ function getDecorations({
   name: string
   defaultLanguage: BundledLanguage | null | undefined
   defaultTheme: BundledTheme
-  themes: {
-    light: BundledTheme,
-    dark: BundledTheme,
-  } | null | undefined
+  themes:
+    | {
+        light: BundledTheme
+        dark: BundledTheme
+      }
+    | null
+    | undefined
 }) {
   const decorations: Decoration[] = []
 
@@ -56,44 +59,62 @@ function getDecorations({
       }
     }
 
-    let options: CodeToTokensWithThemesOptions<BundledLanguage, BundledTheme>
+    let tokens
 
     if (themes) {
-
-      const tokens = highlighter.codeToTokens(block.node.textContent, {
+      tokens = highlighter.codeToTokens(block.node.textContent, {
         lang: language,
         themes: {
           light: getThemeToApply(lightTheme),
           dark: getThemeToApply(darkTheme),
         },
       })
+
+      const blockStyle: { [prop: string]: string } = {}
+      if (tokens.bg) blockStyle['background-color'] = tokens.bg
+      if (tokens.fg) blockStyle['color'] = tokens.fg
+
+      decorations.push(
+        Decoration.node(block.pos, block.pos + block.node.nodeSize, {
+          style: styleToHtml(blockStyle),
+          class: 'shiki',
+        }),
+      )
     } else {
-      const tokens = highlighter.codeToTokensBase(block.node.textContent, {
+      tokens = highlighter.codeToTokens(block.node.textContent, {
         lang: language,
         theme: getThemeToApply(theme),
       })
+
+      const themeToApply = highlighter.getLoadedThemes().includes(theme)
+        ? theme
+        : highlighter.getLoadedThemes()[0]
+
+      const themeResolved = highlighter.getTheme(themeToApply)
+
+      decorations.push(
+        Decoration.node(block.pos, block.pos + block.node.nodeSize, {
+          style: `background-color: ${themeResolved.bg}`,
+        }),
+      )
     }
-
-
-    const tokens = highlighter.codeToTokens(block.node.textContent, options)
-
-    const blockStyle: { [prop: string]: string } = {}
-    if (tokens.bg) blockStyle['background-color'] = tokens.bg
-    if (tokens.fg) blockStyle['color'] = tokens.fg
-
-    decorations.push(
-      Decoration.node(block.pos, block.pos + block.node.nodeSize, {
-        style: styleToHtml(blockStyle),
-        class: 'shiki',
-      }),
-    )
 
     for (const line of tokens.tokens) {
       for (const token of line) {
         const to = from + token.content.length
 
+        //NOTE: tokens object will be different if themes supplied
+        // thus, need to handle style accordingly
+        let style = ''
+
+        if (themes) {
+          style = styleToHtml(token.htmlStyle || {})
+        } else {
+          style = `color: ${token.color}`
+        }
+
         const decoration = Decoration.inline(from, to, {
-          style: styleToHtml(token.htmlStyle || {}),
+          style: style,
         })
 
         decorations.push(decoration)
@@ -117,10 +138,13 @@ export function ShikiPlugin({
   name: string
   defaultLanguage: BundledLanguage | null | undefined
   defaultTheme: BundledTheme
-  themes: {
-    light: BundledTheme,
-    dark: BundledTheme
-  } | null | undefined
+  themes:
+    | {
+        light: BundledTheme
+        dark: BundledTheme
+      }
+    | null
+    | undefined
 }) {
   const shikiPlugin: Plugin<any> = new Plugin({
     key: new PluginKey('shiki'),
@@ -135,12 +159,18 @@ export function ShikiPlugin({
         update() {
           this.checkUndecoratedBlocks()
         }
-        destroy() { }
+        destroy() {}
 
         // Initialize shiki async, and then highlight initial document
         async initDecorations() {
           const doc = view.state.doc
-          await initHighlighter({ doc, name, defaultLanguage, defaultTheme, themeModes: themes })
+          await initHighlighter({
+            doc,
+            name,
+            defaultLanguage,
+            defaultTheme,
+            themeModes: themes,
+          })
           const tr = view.state.tr.setMeta('shikiPluginForceDecoration', true)
           view.dispatch(tr)
         }
@@ -154,12 +184,12 @@ export function ShikiPlugin({
           )
 
           const loaderFns = (block: NodeWithPos): Promise<Boolean>[] => {
-            const fns = [
-              loadLanguage(block.node.attrs.language),
-            ]
+            const fns = [loadLanguage(block.node.attrs.language)]
 
             if (themes) {
-              fns.push(loadTheme(block.node.attrs.themes?.light || themes.light))
+              fns.push(
+                loadTheme(block.node.attrs.themes?.light || themes.light),
+              )
               fns.push(loadTheme(block.node.attrs.themes?.dark || themes.dark))
             } else {
               fns.push(loadTheme(block.node.attrs.theme))
@@ -167,7 +197,6 @@ export function ShikiPlugin({
 
             return fns
           }
-
 
           // Load missing themes or languages when necessary.
           // loadStates is an array with booleans depending on if a theme/lang
@@ -197,7 +226,7 @@ export function ShikiPlugin({
           name,
           defaultLanguage,
           defaultTheme,
-          themes: themes
+          themes: themes,
         })
       },
       apply: (transaction, decorationSet, oldState, newState) => {
@@ -251,7 +280,7 @@ export function ShikiPlugin({
             name,
             defaultLanguage,
             defaultTheme,
-            themes
+            themes,
           })
         }
 

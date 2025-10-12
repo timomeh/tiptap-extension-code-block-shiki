@@ -9,6 +9,11 @@
   },
   "license": "MIT",
   "type": "module",
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org",
+    "provenance": true,
+    "access": "public"
+  },
   "files": [
     "dist"
   ],

@@ -19,4 +19,5 @@ jobs:
           cache: pnpm
       - run: pnpm install
       - run: pnpm test
+      - run: pnpm lint
       - run: pnpm build

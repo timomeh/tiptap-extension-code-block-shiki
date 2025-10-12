@@ -11,7 +11,6 @@ const editor = new Editor({
     StarterKit.configure({ codeBlock: false }),
     CodeBlockShiki.configure({
       defaultTheme: 'tokyo-night',
-      // TODO: add an option for dual themes (light/dark)
     }),
   ],
   content: `<p>Hello World!</p><pre><code class="language-ts">function foo() {

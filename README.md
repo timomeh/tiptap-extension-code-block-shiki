@@ -21,13 +21,13 @@ new Editor({
   extensions: [
     StarterKit.configure({ codeBlock: false }),
     CodeBlockShiki.configure({
-      defaultTheme: 'tokyo-night'
+      defaultTheme: 'tokyo-night',
     }),
   ],
 })
 ```
 
-Go into your TipTap editor, write `` ```ts ``, press <kbd>Enter</kbd>, and write some code! It loads the language on the fly.
+Go into your TipTap editor, write ` ```ts `, press <kbd>Enter</kbd>, and write some code! It loads the language on the fly.
 
 ### Dark Mode Support
 
@@ -52,7 +52,7 @@ new Editor({
 })
 ```
 
-*Note*: In order to enable theme switching, you must add this snippet to your CSS 
+_Note_: In order to enable theme switching, you must add this snippet to your CSS
 
 ```css
 @media (prefers-color-scheme: dark) {
@@ -82,8 +82,6 @@ html.dark .tiptap .shiki span {
 }
 ```
 
-
-
 ## Demo
 
 I posted a small screen recording here: https://mastodon.social/@timomeh/112282962825285237
@@ -103,8 +101,6 @@ Optionally specify themes for light and dark mode. See https://shiki.matsu.io/gu
 ### `defaultLanguage`
 
 Which language to use, when no language was provided. See https://shiki.style/languages.
-
-
 
 ## Notes
 

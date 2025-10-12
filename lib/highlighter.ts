@@ -101,16 +101,19 @@ export async function initHighlighter({
   name,
   defaultTheme,
   defaultLanguage,
-  themeModes
+  themeModes,
 }: {
   doc: ProsemirrorNode
   name: string
   defaultLanguage: BundledLanguage | null | undefined
   defaultTheme: BundledTheme
-  themeModes: {
-    light: BundledTheme,
-    dark: BundledTheme,
-  } | null | undefined
+  themeModes:
+    | {
+        light: BundledTheme
+        dark: BundledTheme
+      }
+    | null
+    | undefined
 }) {
   const codeBlocks = findChildren(doc, (node) => node.type.name === name)
 
@@ -124,8 +127,6 @@ export async function initHighlighter({
   ]
 
   if (!highlighter) {
-
-
     const themesToLoad: BundledTheme[] = [...themes]
     if (themeModes) {
       if (themeModes.light && !themesToLoad.includes(themeModes.light)) {
@@ -138,7 +139,7 @@ export async function initHighlighter({
 
     const loader = loadHighlighter({
       languages,
-      themes: themesToLoad
+      themes: themesToLoad,
     })
     await loader
   } else {

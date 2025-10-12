@@ -6,10 +6,13 @@ import { ShikiPlugin } from './shiki-plugin.ts'
 export interface CodeBlockShikiOptions extends CodeBlockOptions {
   defaultLanguage: BundledLanguage | null | undefined
   defaultTheme: BundledTheme
-  themes: {
-    light: BundledTheme,
-    dark: BundledTheme
-  } | null | undefined
+  themes:
+    | {
+        light: BundledTheme
+        dark: BundledTheme
+      }
+    | null
+    | undefined
 }
 
 export const CodeBlockShiki = CodeBlock.extend<CodeBlockShikiOptions>({
@@ -28,7 +31,7 @@ export const CodeBlockShiki = CodeBlock.extend<CodeBlockShikiOptions>({
         name: this.name,
         defaultLanguage: this.options.defaultLanguage,
         defaultTheme: this.options.defaultTheme,
-        themes: this.options.themes
+        themes: this.options.themes,
       }),
     ]
   },

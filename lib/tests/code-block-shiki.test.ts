@@ -1,9 +1,8 @@
-import { it, expect, afterEach, vi } from 'vitest'
-import { resetHighlighter } from '../highlighter'
-
 import { Editor } from '@tiptap/core'
 import StarterKit from '@tiptap/starter-kit'
+import { afterEach, expect, it, vi } from 'vitest'
 import { CodeBlockShiki } from '../code-block-shiki'
+import { resetHighlighter } from '../highlighter'
 
 afterEach(() => {
   resetHighlighter()
@@ -51,8 +50,7 @@ it('highlights code with #setContent', async () => {
     content: `<p>Hello World!</p>`,
   })
 
-  editor.commands
-    .setContent(`<p>Hello World!</p><pre><code class="language-ts">function foo() {
+  editor.commands.setContent(`<p>Hello World!</p><pre><code class="language-ts">function foo() {
   return 'bar'
 }</code></pre><pre><code class="language-css">.foo {
   color: green;

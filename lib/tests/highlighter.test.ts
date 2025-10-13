@@ -1,4 +1,4 @@
-import { it, expect, afterEach } from 'vitest'
+import { afterEach, expect, it } from 'vitest'
 import {
   getShiki,
   loadHighlighter,

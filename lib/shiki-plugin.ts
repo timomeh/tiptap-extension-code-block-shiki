@@ -1,8 +1,8 @@
-import { BundledLanguage, BundledTheme } from 'shiki'
-import { NodeWithPos, findChildren } from '@tiptap/core'
-import { Plugin, PluginKey, PluginView } from '@tiptap/pm/state'
+import { findChildren, type NodeWithPos } from '@tiptap/core'
+import type { Node as ProsemirrorNode } from '@tiptap/pm/model'
+import { Plugin, PluginKey, type PluginView } from '@tiptap/pm/state'
 import { Decoration, DecorationSet } from '@tiptap/pm/view'
-import { Node as ProsemirrorNode } from '@tiptap/pm/model'
+import type { BundledLanguage, BundledTheme, TokensResult } from 'shiki'
 import {
   getShiki,
   initHighlighter,
@@ -39,9 +39,9 @@ function getDecorations({
     let from = block.pos + 1
     let language = block.node.attrs.language || defaultLanguage
 
-    let theme = block.node.attrs.theme || defaultTheme
-    let lightTheme = block.node.attrs.themes?.light || themes?.light
-    let darkTheme = block.node.attrs.themes?.dark || themes?.dark
+    const theme = block.node.attrs.theme || defaultTheme
+    const lightTheme = block.node.attrs.themes?.light || themes?.light
+    const darkTheme = block.node.attrs.themes?.dark || themes?.dark
 
     const highlighter = getShiki()
 
@@ -59,7 +59,7 @@ function getDecorations({
       }
     }
 
-    let tokens
+    let tokens: TokensResult
 
     if (themes) {
       tokens = highlighter.codeToTokens(block.node.textContent, {
@@ -72,7 +72,7 @@ function getDecorations({
 
       const blockStyle: { [prop: string]: string } = {}
       if (tokens.bg) blockStyle['background-color'] = tokens.bg
-      if (tokens.fg) blockStyle['color'] = tokens.fg
+      if (tokens.fg) blockStyle.color = tokens.fg
 
       decorations.push(
         Decoration.node(block.pos, block.pos + block.node.nodeSize, {
@@ -94,7 +94,7 @@ function getDecorations({
 
       decorations.push(
         Decoration.node(block.pos, block.pos + block.node.nodeSize, {
-          style: `background-color: ${themeResolved.bg}`,
+          style: styleToHtml({ 'background-color': themeResolved.bg }),
         }),
       )
     }
@@ -110,7 +110,7 @@ function getDecorations({
         if (themes) {
           style = styleToHtml(token.htmlStyle || {})
         } else {
-          style = `color: ${token.color}`
+          style = styleToHtml({ color: token.color || 'inherit' })
         }
 
         const decoration = Decoration.inline(from, to, {
@@ -146,7 +146,7 @@ export function ShikiPlugin({
     | null
     | undefined
 }) {
-  const shikiPlugin: Plugin<any> = new Plugin({
+  const shikiPlugin: Plugin<DecorationSet> = new Plugin({
     key: new PluginKey('shiki'),
 
     view(view) {
@@ -183,7 +183,7 @@ export function ShikiPlugin({
             (node) => node.type.name === name,
           )
 
-          const loaderFns = (block: NodeWithPos): Promise<Boolean>[] => {
+          const loaderFns = (block: NodeWithPos): Promise<boolean>[] => {
             const fns = [loadLanguage(block.node.attrs.language)]
 
             if (themes) {
@@ -252,18 +252,16 @@ export function ShikiPlugin({
             // (for example, a transaction that affects the entire document).
             // Such transactions can happen during collab syncing via y-prosemirror, for example.
             transaction.steps.some((step) => {
-              // @ts-ignore
               return (
-                // @ts-ignore
+                // @ts-expect-error
                 step.from !== undefined &&
-                // @ts-ignore
+                // @ts-expect-error
                 step.to !== undefined &&
                 oldNodes.some((node) => {
-                  // @ts-ignore
                   return (
-                    // @ts-ignore
+                    // @ts-expect-error
                     node.pos >= step.from &&
-                    // @ts-ignore
+                    // @ts-expect-error
                     node.pos + node.node.nodeSize <= step.to
                   )
                 })

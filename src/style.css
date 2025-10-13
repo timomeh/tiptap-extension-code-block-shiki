@@ -1,3 +1,5 @@
+/* biome-ignore-all lint/complexity/noImportantStyles: required for testing */
+
 :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
@@ -107,8 +109,8 @@ The exact implementaiton of applying dark/light mode styles depends on the indiv
 depending on whether you use Media Quey or Class based-
 however you can view some options here: https://shiki.matsu.io/guide/dual-themes
 */
-[data-theme='dark'] .tiptap .shiki,
-[data-theme='dark'] .tiptap .shiki span {
+[data-theme="dark"] .tiptap .shiki,
+[data-theme="dark"] .tiptap .shiki span {
   color: var(--shiki-dark) !important;
   background-color: var(--shiki-dark-bg) !important;
 }

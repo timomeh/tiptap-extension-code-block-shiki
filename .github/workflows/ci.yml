@@ -8,7 +8,7 @@ on:
       - main
 
 jobs:
-  test-and-build:
+  test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
@@ -19,5 +19,24 @@ jobs:
           cache: pnpm
       - run: pnpm install
       - run: pnpm test
-      - run: pnpm lint
+
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: biomejs/setup-biome@v2
+        with:
+          version: latest
+      - run: biome ci .
+
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: pnpm/action-setup@v3
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20.x
+          cache: pnpm
+      - run: pnpm install
       - run: pnpm build

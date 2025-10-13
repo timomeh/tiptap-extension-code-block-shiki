@@ -46,7 +46,6 @@
   },
   "peerDependencies": {
     "@tiptap/core": "^2.3.0 || ^3.0.0",
-    "@tiptap/extension-code-block": "^2.3.0 || ^3.0.0",
     "@tiptap/pm": "^2.3.0 || ^3.0.0",
     "shiki": "^3.0.0"
   },

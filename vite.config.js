@@ -1,5 +1,5 @@
 import { resolve } from 'node:path'
-import webpackStatsPlugin from 'rollup-plugin-webpack-stats'
+import { codecovVitePlugin } from '@codecov/vite-plugin'
 import dts from 'unplugin-dts/vite'
 import { defineConfig } from 'vite'
 import pkg from './package.json'
@@ -18,11 +18,13 @@ export default defineConfig({
     },
   },
   plugins: [
-    process.env.BUNDLESIZE === 'true'
-      ? webpackStatsPlugin({ fileName: 'stats.json' })
-      : false,
     dts({ bundleTypes: true }),
-  ].filter(Boolean),
+    codecovVitePlugin({
+      enableBundleAnalysis: process.env.CODECOV_TOKEN !== undefined,
+      bundleName: 'tiptap-extension-code-block-shiki',
+      uploadToken: process.env.CODECOV_TOKEN,
+    }),
+  ],
   test: {
     environment: 'happy-dom',
     coverage: {

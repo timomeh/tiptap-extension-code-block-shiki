@@ -1,5 +1,5 @@
-import CodeBlock, { CodeBlockOptions } from '@tiptap/extension-code-block'
-import { BundledLanguage, BundledTheme } from 'shiki'
+import CodeBlock, { type CodeBlockOptions } from '@tiptap/extension-code-block'
+import type { BundledLanguage, BundledTheme } from 'shiki'
 
 import { ShikiPlugin } from './shiki-plugin.ts'
 

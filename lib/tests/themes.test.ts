@@ -1,9 +1,8 @@
-import { it, expect, afterEach, vi } from 'vitest'
-import { resetHighlighter } from '../highlighter'
-
 import { Editor } from '@tiptap/core'
 import StarterKit from '@tiptap/starter-kit'
+import { afterEach, expect, it, vi } from 'vitest'
 import { CodeBlockShiki } from '../code-block-shiki'
+import { resetHighlighter } from '../highlighter'
 
 afterEach(() => {
   resetHighlighter()

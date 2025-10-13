@@ -42,7 +42,7 @@ new Editor({
   extensions: [
     StarterKit.configure({ codeBlock: false }),
     CodeBlockShiki.configure({
-      defaultTheme: 'tokyo-night' // Fallback theme
+      defaultTheme: 'tokyo-night', // Fallback theme
       themes: {
         light: 'github-light',
         dark: 'github-dark',
@@ -94,7 +94,7 @@ The extension extends [CodeBlock](https://tiptap.dev/docs/editor/api/nodes/code-
 
 Which theme to use by default. See https://shiki.style/themes.
 
-## `themes`
+### `themes`
 
 Optionally specify themes for light and dark mode. See https://shiki.matsu.io/guide/dual-themes
 

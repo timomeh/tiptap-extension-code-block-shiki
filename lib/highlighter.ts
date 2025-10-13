@@ -1,13 +1,13 @@
+import { findChildren } from '@tiptap/core'
+import type { Node as ProsemirrorNode } from '@tiptap/pm/model'
 import {
-  createHighlighter,
-  Highlighter,
-  BundledLanguage,
-  BundledTheme,
+  type BundledLanguage,
+  type BundledTheme,
   bundledLanguages,
   bundledThemes,
+  createHighlighter,
+  type Highlighter,
 } from 'shiki'
-import { findChildren } from '@tiptap/core'
-import { Node as ProsemirrorNode } from '@tiptap/pm/model'
 
 let highlighter: Highlighter | undefined
 let highlighterPromise: Promise<void> | undefined

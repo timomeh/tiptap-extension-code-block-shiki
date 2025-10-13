@@ -5,8 +5,11 @@ import CodeBlockShiki from '../lib'
 
 import './style.css'
 
+const element = document.querySelector('#editor')
+if (!element) throw new Error('#editor not in DOM')
+
 const editor = new Editor({
-  element: document.querySelector('#editor')!,
+  element,
   extensions: [
     StarterKit.configure({ codeBlock: false }),
     CodeBlockShiki.configure({
@@ -20,5 +23,5 @@ const editor = new Editor({
 }</code></pre>`,
 })
 
-// @ts-ignore
+// @ts-expect-error
 window.editor = editor

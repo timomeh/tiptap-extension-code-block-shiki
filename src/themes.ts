@@ -4,8 +4,11 @@ import CodeBlockShiki from '../lib'
 
 import './style.css'
 
+const element = document.querySelector('#editor')
+if (!element) throw new Error('#editor not in DOM')
+
 const editor = new Editor({
-  element: document.querySelector('#editor')!,
+  element,
   extensions: [
     StarterKit.configure({ codeBlock: false }),
     CodeBlockShiki.configure({
@@ -40,10 +43,7 @@ function getInitialTheme(): string {
     return savedTheme
   }
   // Detect system preference
-  if (
-    window.matchMedia &&
-    window.matchMedia('(prefers-color-scheme: dark)').matches
-  ) {
+  if (window.matchMedia?.('(prefers-color-scheme: dark)').matches) {
     return 'dark'
   }
   return 'light' // Default theme
@@ -53,11 +53,15 @@ function getInitialTheme(): string {
 document.addEventListener('DOMContentLoaded', () => {
   applyTheme(getInitialTheme())
 
+  if (!themeToggleBtn) {
+    throw new Error('toggle theme button not in DOM')
+  }
+
   const currentTheme = htmlElement.getAttribute('data-theme')
   if (currentTheme === 'dark') {
-    themeToggleBtn!.innerText = 'Switch to Light Theme'
+    themeToggleBtn.innerText = 'Switch to Light Theme'
   } else {
-    themeToggleBtn!.innerText = 'Switch to Dark Theme'
+    themeToggleBtn.innerText = 'Switch to Dark Theme'
   }
 })
 
@@ -71,5 +75,5 @@ themeToggleBtn?.addEventListener('click', () => {
   applyTheme(newTheme)
 })
 
-// @ts-ignore
+// @ts-expect-error
 window.editor = editor

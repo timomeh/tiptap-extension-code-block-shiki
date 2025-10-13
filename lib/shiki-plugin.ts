@@ -159,6 +159,7 @@ export function ShikiPlugin({
         update() {
           this.checkUndecoratedBlocks()
         }
+
         destroy() {}
 
         // Initialize shiki async, and then highlight initial document

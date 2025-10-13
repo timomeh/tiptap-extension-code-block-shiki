@@ -3,6 +3,7 @@ import type { BundledLanguage, BundledTheme } from 'shiki'
 
 import { ShikiPlugin } from './shiki-plugin.ts'
 
+/* v8 ignore start -- @preserve */
 export interface CodeBlockShikiOptions extends CodeBlockOptions {
   defaultLanguage: BundledLanguage | null | undefined
   defaultTheme: BundledTheme
@@ -14,14 +15,16 @@ export interface CodeBlockShikiOptions extends CodeBlockOptions {
     | null
     | undefined
 }
+/* v8 ignore stop -- @preserve */
 
 export const CodeBlockShiki = CodeBlock.extend<CodeBlockShikiOptions>({
   addOptions() {
     return {
       ...this.parent?.(),
       defaultLanguage: null,
-      defaultTheme: 'github-dark',
-    }
+      defaultTheme: 'github-dark' as BundledTheme,
+      themes: null,
+    } as CodeBlockShikiOptions
   },
 
   addProseMirrorPlugins() {

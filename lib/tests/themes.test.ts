@@ -15,6 +15,7 @@ it('initializes tiptap with codeblock using themes', async () => {
     extensions: [
       StarterKit.configure({ codeBlock: false }),
       CodeBlockShiki.configure({
+        defaultTheme: 'tokyo-night',
         themes: {
           light: 'github-light',
           dark: 'github-dark',
@@ -34,11 +35,11 @@ it('initializes tiptap with codeblock using themes', async () => {
   })
 
   expect(mount.innerHTML).toMatchInlineSnapshot(`
-    "<div contenteditable="true" translate="no" class="tiptap ProseMirror" tabindex="0"><p>Hello World!</p><pre class="shiki" style="background-color: #fff; --shiki-dark-bg: #24292e; color: #24292e; --shiki-dark: #e1e4e8;"><code class="language-ts"><span style="color: #D73A49; --shiki-dark: #F97583;">function</span><span style="color: #24292E; --shiki-dark: #E1E4E8;"> </span><span style="color: #6F42C1; --shiki-dark: #B392F0;">foo</span><span style="color: #24292E; --shiki-dark: #E1E4E8;">() {</span>
+    "<div contenteditable="true" role="textbox" translate="no" class="tiptap ProseMirror" tabindex="0"><p>Hello World!</p><pre class="shiki" style="background-color: #fff; --shiki-dark-bg: #24292e; color: #24292e; --shiki-dark: #e1e4e8;"><code class="language-ts"><span style="color: #D73A49; --shiki-dark: #F97583;">function</span><span style="color: #24292E; --shiki-dark: #E1E4E8;"> </span><span style="color: #6F42C1; --shiki-dark: #B392F0;">foo</span><span style="color: #24292E; --shiki-dark: #E1E4E8;">() {</span>
     <span style="color: #24292E; --shiki-dark: #E1E4E8;">  </span><span style="color: #D73A49; --shiki-dark: #F97583;">return</span><span style="color: #24292E; --shiki-dark: #E1E4E8;"> </span><span style="color: #032F62; --shiki-dark: #9ECBFF;">'bar'</span>
     <span style="color: #24292E; --shiki-dark: #E1E4E8;">}</span></code></pre><pre class="shiki" style="background-color: #fff; --shiki-dark-bg: #24292e; color: #24292e; --shiki-dark: #e1e4e8;"><code class="language-css"><span style="color: #6F42C1; --shiki-dark: #B392F0;">.foo</span><span style="color: #24292E; --shiki-dark: #E1E4E8;"> {</span>
     <span style="color: #24292E; --shiki-dark: #E1E4E8;">  </span><span style="color: #005CC5; --shiki-dark: #79B8FF;">color</span><span style="color: #24292E; --shiki-dark: #E1E4E8;">: </span><span style="color: #005CC5; --shiki-dark: #79B8FF;">green</span><span style="color: #24292E; --shiki-dark: #E1E4E8;">;</span>
-    <span style="color: #24292E; --shiki-dark: #E1E4E8;">}</span></code></pre></div>"
+    <span style="color: #24292E; --shiki-dark: #E1E4E8;">}</span></code></pre><p><br class="ProseMirror-trailingBreak"></p></div>"
   `)
 })
 
@@ -49,6 +50,7 @@ it('loads both light and dark themes on initialization', async () => {
     extensions: [
       StarterKit.configure({ codeBlock: false }),
       CodeBlockShiki.configure({
+        defaultTheme: 'tokyo-night',
         themes: {
           light: 'github-light',
           dark: 'github-dark',
@@ -76,6 +78,7 @@ it('applies themes mode styling with htmlStyle', async () => {
     extensions: [
       StarterKit.configure({ codeBlock: false }),
       CodeBlockShiki.configure({
+        defaultTheme: 'tokyo-night',
         themes: {
           light: 'github-light',
           dark: 'github-dark',
@@ -100,6 +103,7 @@ it('handles setContent with themes configuration', async () => {
     extensions: [
       StarterKit.configure({ codeBlock: false }),
       CodeBlockShiki.configure({
+        defaultTheme: 'tokyo-night',
         themes: {
           light: 'github-light',
           dark: 'github-dark',
@@ -127,6 +131,7 @@ it('handles toggleCodeBlock with themes', async () => {
     extensions: [
       StarterKit.configure({ codeBlock: false }),
       CodeBlockShiki.configure({
+        defaultTheme: 'tokyo-night',
         themes: {
           light: 'github-light',
           dark: 'github-dark',
@@ -153,6 +158,7 @@ it('highlights while typing with themes configuration', async () => {
     extensions: [
       StarterKit.configure({ codeBlock: false }),
       CodeBlockShiki.configure({
+        defaultTheme: 'tokyo-night',
         themes: {
           light: 'github-light',
           dark: 'github-dark',

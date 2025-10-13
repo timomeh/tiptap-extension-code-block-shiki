@@ -31,11 +31,11 @@ it('initializes tiptap with the codeblock', async () => {
   })
 
   expect(mount.innerHTML).toMatchInlineSnapshot(`
-    "<div contenteditable="true" translate="no" class="tiptap ProseMirror" tabindex="0"><p>Hello World!</p><pre style="background-color: #1a1b26;"><code class="language-ts"><span style="color: #BB9AF7;">function</span><span style="color: #A9B1D6;"> </span><span style="color: #7AA2F7;">foo</span><span style="color: #9ABDF5;">()</span><span style="color: #A9B1D6;"> </span><span style="color: #9ABDF5;">{</span>
+    "<div contenteditable="true" role="textbox" translate="no" class="tiptap ProseMirror" tabindex="0"><p>Hello World!</p><pre style="background-color: #1a1b26;"><code class="language-ts"><span style="color: #BB9AF7;">function</span><span style="color: #A9B1D6;"> </span><span style="color: #7AA2F7;">foo</span><span style="color: #9ABDF5;">()</span><span style="color: #A9B1D6;"> </span><span style="color: #9ABDF5;">{</span>
     <span style="color: #9ABDF5;">  </span><span style="color: #BB9AF7;">return</span><span style="color: #9ABDF5;"> </span><span style="color: #89DDFF;">'</span><span style="color: #9ECE6A;">bar</span><span style="color: #89DDFF;">'</span>
     <span style="color: #9ABDF5;">}</span></code></pre><pre style="background-color: #1a1b26;"><code class="language-css"><span style="color: #E0AF68;">.</span><span style="color: #9ECE6A;">foo</span><span style="color: #A9B1D6;"> </span><span style="color: #9ABDF5;">{</span>
     <span style="color: #9ABDF5;">  </span><span style="color: #7AA2F7;">color</span><span style="color: #89DDFF;">:</span><span style="color: #9ABDF5;"> </span><span style="color: #FF9E64;">green</span><span style="color: #89DDFF;">;</span>
-    <span style="color: #9ABDF5;">}</span></code></pre></div>"
+    <span style="color: #9ABDF5;">}</span></code></pre><p><br class="ProseMirror-trailingBreak"></p></div>"
   `)
 })
 
@@ -64,11 +64,11 @@ it('highlights code with #setContent', async () => {
   })
 
   expect(mount.innerHTML).toMatchInlineSnapshot(`
-    "<div contenteditable="true" translate="no" class="tiptap ProseMirror" tabindex="0"><p>Hello World!</p><pre style="background-color: #1a1b26;"><code class="language-ts"><span style="color: #BB9AF7;">function</span><span style="color: #A9B1D6;"> </span><span style="color: #7AA2F7;">foo</span><span style="color: #9ABDF5;">()</span><span style="color: #A9B1D6;"> </span><span style="color: #9ABDF5;">{</span>
+    "<div contenteditable="true" role="textbox" translate="no" class="tiptap ProseMirror" tabindex="0"><p>Hello World!</p><pre style="background-color: #1a1b26;"><code class="language-ts"><span style="color: #BB9AF7;">function</span><span style="color: #A9B1D6;"> </span><span style="color: #7AA2F7;">foo</span><span style="color: #9ABDF5;">()</span><span style="color: #A9B1D6;"> </span><span style="color: #9ABDF5;">{</span>
     <span style="color: #9ABDF5;">  </span><span style="color: #BB9AF7;">return</span><span style="color: #9ABDF5;"> </span><span style="color: #89DDFF;">'</span><span style="color: #9ECE6A;">bar</span><span style="color: #89DDFF;">'</span>
     <span style="color: #9ABDF5;">}</span></code></pre><pre style="background-color: #1a1b26;"><code class="language-css"><span style="color: #E0AF68;">.</span><span style="color: #9ECE6A;">foo</span><span style="color: #A9B1D6;"> </span><span style="color: #9ABDF5;">{</span>
     <span style="color: #9ABDF5;">  </span><span style="color: #7AA2F7;">color</span><span style="color: #89DDFF;">:</span><span style="color: #9ABDF5;"> </span><span style="color: #FF9E64;">green</span><span style="color: #89DDFF;">;</span>
-    <span style="color: #9ABDF5;">}</span></code></pre></div>"
+    <span style="color: #9ABDF5;">}</span></code></pre><p><br class="ProseMirror-trailingBreak"></p></div>"
   `)
 })
 
@@ -91,7 +91,7 @@ it('highlights content with #toggleCodeBlock', async () => {
   })
 
   expect(mount.innerHTML).toMatchInlineSnapshot(
-    `"<div contenteditable="true" translate="no" class="tiptap ProseMirror" tabindex="0"><pre style="background-color: #1a1b26;"><code class="language-ts"><span style="color: #9D7CD8;">const</span><span style="color: #A9B1D6;"> </span><span style="color: #BB9AF7;">foo</span><span style="color: #A9B1D6;"> </span><span style="color: #89DDFF;">=</span><span style="color: #A9B1D6;"> </span><span style="color: #89DDFF;">'</span><span style="color: #9ECE6A;">bar</span><span style="color: #89DDFF;">'</span></code></pre></div>"`,
+    `"<div contenteditable="true" role="textbox" translate="no" class="tiptap ProseMirror" tabindex="0"><pre style="background-color: #1a1b26;"><code class="language-ts"><span style="color: #9D7CD8;">const</span><span style="color: #A9B1D6;"> </span><span style="color: #BB9AF7;">foo</span><span style="color: #A9B1D6;"> </span><span style="color: #89DDFF;">=</span><span style="color: #A9B1D6;"> </span><span style="color: #89DDFF;">'</span><span style="color: #9ECE6A;">bar</span><span style="color: #89DDFF;">'</span></code></pre><p><br class="ProseMirror-trailingBreak"></p></div>"`,
   )
 })
 
@@ -118,23 +118,23 @@ it('highlights code while typing', async () => {
   })
 
   expect(mount.innerHTML).toMatchInlineSnapshot(
-    `"<div contenteditable="true" translate="no" class="tiptap ProseMirror" tabindex="0"><pre style="background-color: #1a1b26;"><code class="language-ts"><span style="color: #9D7CD8;">const</span></code></pre></div>"`,
+    `"<div contenteditable="true" role="textbox" translate="no" class="tiptap ProseMirror" tabindex="0"><pre style="background-color: #1a1b26;"><code class="language-ts"><span style="color: #9D7CD8;">const</span></code></pre><p><br class="ProseMirror-trailingBreak"></p></div>"`,
   )
 
   editor.commands.insertContent(' foo')
   expect(mount.innerHTML).toMatchInlineSnapshot(
-    `"<div contenteditable="true" translate="no" class="tiptap ProseMirror" tabindex="0"><pre style="background-color: #1a1b26;"><code class="language-ts"><span style="color: #9D7CD8;">const</span><span style="color: #A9B1D6;"> </span><span style="color: #BB9AF7;">foo</span></code></pre></div>"`,
+    `"<div contenteditable="true" role="textbox" translate="no" class="tiptap ProseMirror" tabindex="0"><pre style="background-color: #1a1b26;"><code class="language-ts"><span style="color: #9D7CD8;">const</span><span style="color: #A9B1D6;"> </span><span style="color: #BB9AF7;">foo</span></code></pre><p><br class="ProseMirror-trailingBreak"></p></div>"`,
   )
 
   editor.commands.insertContent(' = "bar"')
   expect(mount.innerHTML).toMatchInlineSnapshot(
-    `"<div contenteditable="true" translate="no" class="tiptap ProseMirror" tabindex="0"><pre style="background-color: #1a1b26;"><code class="language-ts"><span style="color: #9D7CD8;">const</span><span style="color: #A9B1D6;"> </span><span style="color: #BB9AF7;">foo</span><span style="color: #A9B1D6;"> </span><span style="color: #89DDFF;">=</span><span style="color: #A9B1D6;"> </span><span style="color: #89DDFF;">"</span><span style="color: #9ECE6A;">bar</span><span style="color: #89DDFF;">"</span></code></pre></div>"`,
+    `"<div contenteditable="true" role="textbox" translate="no" class="tiptap ProseMirror" tabindex="0"><pre style="background-color: #1a1b26;"><code class="language-ts"><span style="color: #9D7CD8;">const</span><span style="color: #A9B1D6;"> </span><span style="color: #BB9AF7;">foo</span><span style="color: #A9B1D6;"> </span><span style="color: #89DDFF;">=</span><span style="color: #A9B1D6;"> </span><span style="color: #89DDFF;">"</span><span style="color: #9ECE6A;">bar</span><span style="color: #89DDFF;">"</span></code></pre><p><br class="ProseMirror-trailingBreak"></p></div>"`,
   )
 
   editor.commands.insertContent(`;
 console.log('hello')`)
   expect(mount.innerHTML).toMatchInlineSnapshot(`
-    "<div contenteditable="true" translate="no" class="tiptap ProseMirror" tabindex="0"><pre style="background-color: #1a1b26;"><code class="language-ts"><span style="color: #9D7CD8;">const</span><span style="color: #A9B1D6;"> </span><span style="color: #BB9AF7;">foo</span><span style="color: #A9B1D6;"> </span><span style="color: #89DDFF;">=</span><span style="color: #A9B1D6;"> </span><span style="color: #89DDFF;">"</span><span style="color: #9ECE6A;">bar</span><span style="color: #89DDFF;">"</span><span style="color: #89DDFF;">;</span>
-    <span style="color: #C0CAF5;">console</span><span style="color: #89DDFF;">.</span><span style="color: #7AA2F7;">log</span><span style="color: #9ABDF5;">(</span><span style="color: #89DDFF;">'</span><span style="color: #9ECE6A;">hello</span><span style="color: #89DDFF;">'</span><span style="color: #9ABDF5;">)</span></code></pre></div>"
+    "<div contenteditable="true" role="textbox" translate="no" class="tiptap ProseMirror" tabindex="0"><pre style="background-color: #1a1b26;"><code class="language-ts"><span style="color: #9D7CD8;">const</span><span style="color: #A9B1D6;"> </span><span style="color: #BB9AF7;">foo</span><span style="color: #A9B1D6;"> </span><span style="color: #89DDFF;">=</span><span style="color: #A9B1D6;"> </span><span style="color: #89DDFF;">"</span><span style="color: #9ECE6A;">bar</span><span style="color: #89DDFF;">"</span><span style="color: #89DDFF;">;</span>
+    <span style="color: #C0CAF5;">console</span><span style="color: #89DDFF;">.</span><span style="color: #7AA2F7;">log</span><span style="color: #9ABDF5;">(</span><span style="color: #89DDFF;">'</span><span style="color: #9ECE6A;">hello</span><span style="color: #89DDFF;">'</span><span style="color: #9ABDF5;">)</span></code></pre><p><br class="ProseMirror-trailingBreak"></p></div>"
   `)
 })

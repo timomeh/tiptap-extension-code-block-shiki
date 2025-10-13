@@ -18,7 +18,11 @@ jobs:
           node-version: 20.x
           cache: pnpm
       - run: pnpm install
-      - run: pnpm test
+      - run: pnpm test:coverage
+      - uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: coverage
 
   lint:
     runs-on: ubuntu-latest
@@ -33,23 +37,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
+        with:
+          fetch-depth: 2
       - uses: pnpm/action-setup@v3
       - uses: actions/setup-node@v4
         with:
           node-version: 20.x
           cache: pnpm
       - run: pnpm install
-      - run: pnpm build
-
-  bundlesize:
-    runs-on: ubuntu-latest
-    permissions:
-      pull-requests: write
-    steps:
-      - uses: actions/checkout@v5
-      - uses: pnpm/action-setup@v3
-      - uses: actions/setup-node@v4
+      - run: BUNDLESIZE=true pnpm build
+      - uses: relative-ci/agent-action@v3
         with:
-          node-version: 20.x
-          cache: pnpm
-      - uses: preactjs/compressed-size-action@v2
+          webpackStatsFile: ./dist/stats.json
+          key: ${{ secrets.RELATIVE_CI_KEY }}

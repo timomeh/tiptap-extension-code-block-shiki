@@ -29,6 +29,9 @@ importers:
       happy-dom:
         specifier: ^20.0.0
         version: 20.0.0
+      rollup-plugin-webpack-stats:
+        specifier: ^2.1.6
+        version: 2.1.6(rollup@4.52.4)(vite@7.1.9(@types/node@24.7.2))
       shiki:
         specifier: ^3.12.2
         version: 3.12.2
@@ -41,9 +44,6 @@ importers:
       vite:
         specifier: ^7.1.9
         version: 7.1.9(@types/node@24.7.2)
-      vite-bundle-analyzer:
-        specifier: ^1.2.3
-        version: 1.2.3
       vitest:
         specifier: ^3.2.4
         version: 3.2.4(@types/node@24.7.2)(happy-dom@20.0.0)
@@ -1091,6 +1091,36 @@ packages:
     engines: {node: '>= 0.4'}
     hasBin: true
 
+  rollup-plugin-stats@1.5.1:
+    resolution: {integrity: sha512-WXx9F3i57DLKkB8mt6Zw3jN9sS8YOqTsfvuOG8RW0D95Wn5KHt2e9POh8sYWODgmTsiKK0Nm54ZjxLnp7yeCDw==}
+    engines: {node: '>=18'}
+    peerDependencies:
+      rolldown: ^1.0.0-beta.0
+      rollup: ^3.0.0 || ^4.0.0
+      vite: ^5.0.0 || ^6.0.0 || ^7.0.0
+    peerDependenciesMeta:
+      rolldown:
+        optional: true
+      rollup:
+        optional: true
+      vite:
+        optional: true
+
+  rollup-plugin-webpack-stats@2.1.6:
+    resolution: {integrity: sha512-njKotmo0lWIbrTKJ5CrIPk9DuDsQziOo73rE3aQIAhecJj5o0ECBbE0vxgMor37o6TQ/IEAK8pDxzs4CqLdIJw==}
+    engines: {node: '>=18'}
+    peerDependencies:
+      rolldown: ^1.0.0-beta.0
+      rollup: ^3.0.0 || ^4.0.0
+      vite: ^5.0.0 || ^6.0.0 || ^7.0.0
+    peerDependenciesMeta:
+      rolldown:
+        optional: true
+      rollup:
+        optional: true
+      vite:
+        optional: true
+
   rollup@4.52.4:
     resolution: {integrity: sha512-CLEVl+MnPAiKh5pl4dEWSyMTpuflgNQiLGhMv8ezD5W/qP8AKvmYpCOKRRNOh7oRKnauBZ4SyeYkMS+1VSyKwQ==}
     engines: {node: '>=18.0.0', npm: '>=8.0.0'}
@@ -1257,10 +1287,6 @@ packages:
 
   vfile@6.0.3:
     resolution: {integrity: sha512-KzIbH/9tXat2u30jf+smMwFCsno4wHVdNmzFyL+T/L3UGqqk6JKfVqOFOZEpZSHADH1k40ab6NUIXZq422ov3Q==}
-
-  vite-bundle-analyzer@1.2.3:
-    resolution: {integrity: sha512-8nhwDGHWMKKgg6oegAOpDgTT7/yzTVzeYzLF4y8WBJoYu9gO7h29UpHiQnXD2rAvfQzDy5Wqe/Za5cgqhnxi5g==}
-    hasBin: true
 
   vite-node@3.2.4:
     resolution: {integrity: sha512-EbKSKh+bh1E1IFxeO0pg1n4dvoOTt0UDiXMd/qn++r98+jPO1xtJilvXldeuQ8giIB5IkpjCgMleHMNEsGH6pg==}
@@ -2394,6 +2420,18 @@ snapshots:
       path-parse: 1.0.7
       supports-preserve-symlinks-flag: 1.0.0
 
+  rollup-plugin-stats@1.5.1(rollup@4.52.4)(vite@7.1.9(@types/node@24.7.2)):
+    optionalDependencies:
+      rollup: 4.52.4
+      vite: 7.1.9(@types/node@24.7.2)
+
+  rollup-plugin-webpack-stats@2.1.6(rollup@4.52.4)(vite@7.1.9(@types/node@24.7.2)):
+    dependencies:
+      rollup-plugin-stats: 1.5.1(rollup@4.52.4)(vite@7.1.9(@types/node@24.7.2))
+    optionalDependencies:
+      rollup: 4.52.4
+      vite: 7.1.9(@types/node@24.7.2)
+
   rollup@4.52.4:
     dependencies:
       '@types/estree': 1.0.8
@@ -2567,8 +2605,6 @@ snapshots:
     dependencies:
       '@types/unist': 3.0.3
       vfile-message: 4.0.3
-
-  vite-bundle-analyzer@1.2.3: {}
 
   vite-node@3.2.4(@types/node@24.7.2):
     dependencies:

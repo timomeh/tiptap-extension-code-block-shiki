@@ -1,7 +1,7 @@
 import { resolve } from 'node:path'
+import webpackStatsPlugin from 'rollup-plugin-webpack-stats'
 import dts from 'unplugin-dts/vite'
 import { defineConfig } from 'vite'
-import { analyzer } from 'vite-bundle-analyzer'
 import pkg from './package.json'
 
 export default defineConfig({
@@ -18,12 +18,11 @@ export default defineConfig({
     },
   },
   plugins: [
-    analyzer({
-      enabled: process.env.VITE_BUNDLE_ANALYZER === 'true',
-      analyzerMode: 'json',
-    }),
+    process.env.VITE_BUNDLE_ANALYZER === 'true'
+      ? webpackStatsPlugin({ fileName: 'stats.json' })
+      : false,
     dts({ bundleTypes: true }),
-  ],
+  ].filter(Boolean),
   test: {
     environment: 'happy-dom',
   },

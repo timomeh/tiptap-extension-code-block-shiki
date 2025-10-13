@@ -14,7 +14,7 @@ export default defineConfig({
       fileName: pkg.name,
     },
     rollupOptions: {
-      external: [/@tiptap\/pm\/.*/, '@tiptap/core', 'shiki'],
+      external: [/@tiptap\/pm\/.*/, 'shiki'],
     },
   },
   plugins: [

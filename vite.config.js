@@ -1,6 +1,7 @@
 import { resolve } from 'node:path'
 import dts from 'unplugin-dts/vite'
 import { defineConfig } from 'vite'
+import { analyzer } from 'vite-bundle-analyzer'
 import pkg from './package.json'
 
 export default defineConfig({
@@ -16,7 +17,13 @@ export default defineConfig({
       external: [/@tiptap\/pm\/.*/, 'shiki'],
     },
   },
-  plugins: [dts({ bundleTypes: true })],
+  plugins: [
+    analyzer({
+      enabled: process.env.VITE_BUNDLE_ANALYZER === 'true',
+      analyzerMode: 'json',
+    }),
+    dts({ bundleTypes: true }),
+  ],
   test: {
     environment: 'happy-dom',
   },

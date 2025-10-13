@@ -41,6 +41,9 @@ importers:
       vite:
         specifier: ^7.1.9
         version: 7.1.9(@types/node@24.7.2)
+      vite-bundle-analyzer:
+        specifier: ^1.2.3
+        version: 1.2.3
       vitest:
         specifier: ^3.2.4
         version: 3.2.4(@types/node@24.7.2)(happy-dom@20.0.0)
@@ -1254,6 +1257,10 @@ packages:
 
   vfile@6.0.3:
     resolution: {integrity: sha512-KzIbH/9tXat2u30jf+smMwFCsno4wHVdNmzFyL+T/L3UGqqk6JKfVqOFOZEpZSHADH1k40ab6NUIXZq422ov3Q==}
+
+  vite-bundle-analyzer@1.2.3:
+    resolution: {integrity: sha512-8nhwDGHWMKKgg6oegAOpDgTT7/yzTVzeYzLF4y8WBJoYu9gO7h29UpHiQnXD2rAvfQzDy5Wqe/Za5cgqhnxi5g==}
+    hasBin: true
 
   vite-node@3.2.4:
     resolution: {integrity: sha512-EbKSKh+bh1E1IFxeO0pg1n4dvoOTt0UDiXMd/qn++r98+jPO1xtJilvXldeuQ8giIB5IkpjCgMleHMNEsGH6pg==}
@@ -2560,6 +2567,8 @@ snapshots:
     dependencies:
       '@types/unist': 3.0.3
       vfile-message: 4.0.3
+
+  vite-bundle-analyzer@1.2.3: {}
 
   vite-node@3.2.4(@types/node@24.7.2):
     dependencies:

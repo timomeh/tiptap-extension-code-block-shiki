@@ -14,29 +14,35 @@
     "provenance": true,
     "access": "public"
   },
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "main": "./dist/tiptap-extension-code-block-shiki.js",
   "types": "./dist/tiptap-extension-code-block-shiki.d.ts",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build",
+    "build": "rm -rf dist && tsc && vite build",
     "preview": "vite preview",
     "test": "vitest",
+    "test:coverage": "vitest run --coverage",
     "lint": "biome lint",
     "format": "biome format"
   },
   "devDependencies": {
     "@biomejs/biome": "2.2.6",
+    "@codecov/vite-plugin": "^1.9.1",
+    "@microsoft/api-extractor": "^7.53.1",
     "@tiptap/core": "^2.3.0",
     "@tiptap/extension-code-block": "^2.3.0",
     "@tiptap/pm": "^2.3.0",
     "@tiptap/starter-kit": "^2.3.0",
-    "happy-dom": "^14.10.1",
+    "@vitest/coverage-v8": "^3.2.4",
+    "happy-dom": "^20.0.0",
     "shiki": "^3.12.2",
-    "typescript": "^5.2.2",
-    "vite": "^5.2.0",
-    "vite-plugin-dts": "^3.8.3",
-    "vitest": "^1.6.0"
+    "typescript": "^5.9.3",
+    "unplugin-dts": "1.0.0-beta.0",
+    "vite": "^7.1.9",
+    "vitest": "^3.2.4"
   },
   "peerDependencies": {
     "@tiptap/core": "^2.3.0 || ^3.0.0",
@@ -44,6 +50,10 @@
     "@tiptap/pm": "^2.3.0 || ^3.0.0",
     "shiki": "^3.0.0"
   },
-  "keywords": ["tiptap", "shiki", "syntax"],
+  "keywords": [
+    "tiptap",
+    "shiki",
+    "syntax"
+  ],
   "packageManager": "pnpm@9.1.0+sha256.22e36fba7f4880ecf749a5ca128b8435da085ecd49575e7fb9e64d6bf4fad394"
 }

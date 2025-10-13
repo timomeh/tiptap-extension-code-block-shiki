@@ -29,9 +29,6 @@ importers:
       happy-dom:
         specifier: ^20.0.0
         version: 20.0.0
-      rollup-plugin-webpack-stats:
-        specifier: ^2.1.6
-        version: 2.1.6(rollup@4.52.4)(vite@7.1.9(@types/node@24.7.2))
       shiki:
         specifier: ^3.12.2
         version: 3.12.2
@@ -1090,36 +1087,6 @@ packages:
     resolution: {integrity: sha512-NPRy+/ncIMeDlTAsuqwKIiferiawhefFJtkNSW0qZJEqMEb+qBt/77B/jGeeek+F0uOeN05CDa6HXbbIgtVX4w==}
     engines: {node: '>= 0.4'}
     hasBin: true
-
-  rollup-plugin-stats@1.5.1:
-    resolution: {integrity: sha512-WXx9F3i57DLKkB8mt6Zw3jN9sS8YOqTsfvuOG8RW0D95Wn5KHt2e9POh8sYWODgmTsiKK0Nm54ZjxLnp7yeCDw==}
-    engines: {node: '>=18'}
-    peerDependencies:
-      rolldown: ^1.0.0-beta.0
-      rollup: ^3.0.0 || ^4.0.0
-      vite: ^5.0.0 || ^6.0.0 || ^7.0.0
-    peerDependenciesMeta:
-      rolldown:
-        optional: true
-      rollup:
-        optional: true
-      vite:
-        optional: true
-
-  rollup-plugin-webpack-stats@2.1.6:
-    resolution: {integrity: sha512-njKotmo0lWIbrTKJ5CrIPk9DuDsQziOo73rE3aQIAhecJj5o0ECBbE0vxgMor37o6TQ/IEAK8pDxzs4CqLdIJw==}
-    engines: {node: '>=18'}
-    peerDependencies:
-      rolldown: ^1.0.0-beta.0
-      rollup: ^3.0.0 || ^4.0.0
-      vite: ^5.0.0 || ^6.0.0 || ^7.0.0
-    peerDependenciesMeta:
-      rolldown:
-        optional: true
-      rollup:
-        optional: true
-      vite:
-        optional: true
 
   rollup@4.52.4:
     resolution: {integrity: sha512-CLEVl+MnPAiKh5pl4dEWSyMTpuflgNQiLGhMv8ezD5W/qP8AKvmYpCOKRRNOh7oRKnauBZ4SyeYkMS+1VSyKwQ==}
@@ -2419,18 +2386,6 @@ snapshots:
       is-core-module: 2.16.1
       path-parse: 1.0.7
       supports-preserve-symlinks-flag: 1.0.0
-
-  rollup-plugin-stats@1.5.1(rollup@4.52.4)(vite@7.1.9(@types/node@24.7.2)):
-    optionalDependencies:
-      rollup: 4.52.4
-      vite: 7.1.9(@types/node@24.7.2)
-
-  rollup-plugin-webpack-stats@2.1.6(rollup@4.52.4)(vite@7.1.9(@types/node@24.7.2)):
-    dependencies:
-      rollup-plugin-stats: 1.5.1(rollup@4.52.4)(vite@7.1.9(@types/node@24.7.2))
-    optionalDependencies:
-      rollup: 4.52.4
-      vite: 7.1.9(@types/node@24.7.2)
 
   rollup@4.52.4:
     dependencies:

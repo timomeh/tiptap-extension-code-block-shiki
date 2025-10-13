@@ -1,5 +1,4 @@
 import { resolve } from 'node:path'
-import webpackStatsPlugin from 'rollup-plugin-webpack-stats'
 import dts from 'unplugin-dts/vite'
 import { defineConfig } from 'vite'
 import pkg from './package.json'
@@ -17,12 +16,7 @@ export default defineConfig({
       external: [/@tiptap\/pm\/.*/, 'shiki'],
     },
   },
-  plugins: [
-    process.env.VITE_BUNDLE_ANALYZER === 'true'
-      ? webpackStatsPlugin({ fileName: 'stats.json' })
-      : false,
-    dts({ bundleTypes: true }),
-  ].filter(Boolean),
+  plugins: [dts({ bundleTypes: true })],
   test: {
     environment: 'happy-dom',
   },

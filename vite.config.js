@@ -1,6 +1,6 @@
 import { resolve } from 'node:path'
+import dts from 'unplugin-dts/vite'
 import { defineConfig } from 'vite'
-import dts from 'vite-plugin-dts'
 import pkg from './package.json'
 
 export default defineConfig({
@@ -16,7 +16,7 @@ export default defineConfig({
       external: [/@tiptap\/pm\/.*/, 'shiki'],
     },
   },
-  plugins: [dts({ rollupTypes: true })],
+  plugins: [dts({ bundleTypes: true })],
   test: {
     environment: 'happy-dom',
   },

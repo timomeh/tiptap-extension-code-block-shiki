@@ -15,6 +15,7 @@ it('initializes tiptap with codeblock using themes', async () => {
     extensions: [
       StarterKit.configure({ codeBlock: false }),
       CodeBlockShiki.configure({
+        defaultTheme: 'tokyo-night',
         themes: {
           light: 'github-light',
           dark: 'github-dark',
@@ -49,6 +50,7 @@ it('loads both light and dark themes on initialization', async () => {
     extensions: [
       StarterKit.configure({ codeBlock: false }),
       CodeBlockShiki.configure({
+        defaultTheme: 'tokyo-night',
         themes: {
           light: 'github-light',
           dark: 'github-dark',
@@ -76,6 +78,7 @@ it('applies themes mode styling with htmlStyle', async () => {
     extensions: [
       StarterKit.configure({ codeBlock: false }),
       CodeBlockShiki.configure({
+        defaultTheme: 'tokyo-night',
         themes: {
           light: 'github-light',
           dark: 'github-dark',
@@ -100,6 +103,7 @@ it('handles setContent with themes configuration', async () => {
     extensions: [
       StarterKit.configure({ codeBlock: false }),
       CodeBlockShiki.configure({
+        defaultTheme: 'tokyo-night',
         themes: {
           light: 'github-light',
           dark: 'github-dark',
@@ -127,6 +131,7 @@ it('handles toggleCodeBlock with themes', async () => {
     extensions: [
       StarterKit.configure({ codeBlock: false }),
       CodeBlockShiki.configure({
+        defaultTheme: 'tokyo-night',
         themes: {
           light: 'github-light',
           dark: 'github-dark',
@@ -153,6 +158,7 @@ it('highlights while typing with themes configuration', async () => {
     extensions: [
       StarterKit.configure({ codeBlock: false }),
       CodeBlockShiki.configure({
+        defaultTheme: 'tokyo-night',
         themes: {
           light: 'github-light',
           dark: 'github-dark',

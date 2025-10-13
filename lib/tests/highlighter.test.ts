@@ -1,6 +1,7 @@
 import { afterEach, expect, it } from 'vitest'
 import {
   getShiki,
+  initHighlighter,
   loadHighlighter,
   loadLanguage,
   loadTheme,
@@ -74,4 +75,25 @@ it('loads langs only once', async () => {
 
   const highlighter = getShiki()
   expect(highlighter?.getLoadedLanguages()).toEqual(['c'])
+})
+
+it('initializes the highligher only once', async () => {
+  await initHighlighter({
+    // biome-ignore lint/suspicious/noExplicitAny: test
+    doc: { descendants: () => null } as unknown as any,
+    defaultLanguage: 'c',
+    defaultTheme: 'ayu-dark',
+    name: 'foo',
+    themeModes: null,
+  })
+  await initHighlighter({
+    // biome-ignore lint/suspicious/noExplicitAny: test
+    doc: { descendants: () => null } as unknown as any,
+    defaultLanguage: 'css',
+    defaultTheme: 'tokyo-night',
+    name: 'bar',
+    themeModes: null,
+  })
+  const highlighter = getShiki()
+  expect(highlighter?.getLoadedLanguages()).toEqual(['c', 'css'])
 })

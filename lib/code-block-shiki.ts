@@ -20,8 +20,9 @@ export const CodeBlockShiki = CodeBlock.extend<CodeBlockShikiOptions>({
     return {
       ...this.parent?.(),
       defaultLanguage: null,
-      defaultTheme: 'github-dark',
-    }
+      defaultTheme: 'github-dark' as BundledTheme,
+      themes: null,
+    } as CodeBlockShikiOptions
   },
 
   addProseMirrorPlugins() {

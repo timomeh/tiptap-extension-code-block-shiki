@@ -3,6 +3,7 @@ import type { Node as ProsemirrorNode } from '@tiptap/pm/model'
 import {
   type BundledLanguage,
   type BundledTheme,
+  type ThemeRegistration,
   bundledLanguages,
   bundledThemes,
   createHighlighter,
@@ -12,11 +13,17 @@ import {
 let highlighter: Highlighter | undefined
 let highlighterPromise: Promise<void> | undefined
 const loadingLanguages = new Set<BundledLanguage>()
-const loadingThemes = new Set<BundledTheme>()
+const loadingThemes = new Set<string>()
+const customThemeRegistry = new Map<string, ThemeRegistration>()
 
 type HighlighterOptions = {
-  themes: (BundledTheme | null | undefined)[]
+  themes: (BundledTheme | string | null | undefined)[]
   languages: (BundledLanguage | null | undefined)[]
+  customThemes?: ThemeRegistration[]
+}
+
+function isKnownTheme(theme: string): boolean {
+  return theme in bundledThemes || customThemeRegistry.has(theme)
 }
 
 export function resetHighlighter() {
@@ -24,6 +31,7 @@ export function resetHighlighter() {
   highlighterPromise = undefined
   loadingLanguages.clear()
   loadingThemes.clear()
+  customThemeRegistry.clear()
 }
 
 export function getShiki() {
@@ -35,12 +43,19 @@ export function getShiki() {
  */
 export function loadHighlighter(opts: HighlighterOptions) {
   if (!highlighter && !highlighterPromise) {
-    const themes = opts.themes.filter(
+    if (opts.customThemes) {
+      for (const t of opts.customThemes) {
+        if (t.name) customThemeRegistry.set(t.name, t)
+      }
+    }
+
+    const bundled = opts.themes.filter(
       (theme): theme is BundledTheme => !!theme && theme in bundledThemes,
     )
     const langs = opts.languages.filter(
       (lang): lang is BundledLanguage => !!lang && lang in bundledLanguages,
     )
+    const themes = [...bundled, ...customThemeRegistry.values()]
     highlighterPromise = createHighlighter({ themes, langs }).then((h) => {
       highlighter = h
     })
@@ -56,15 +71,16 @@ export function loadHighlighter(opts: HighlighterOptions) {
  * Loads a theme if it's valid and not yet loaded.
  * @returns true or false depending on if it got loaded.
  */
-export async function loadTheme(theme: BundledTheme) {
+export async function loadTheme(theme: BundledTheme | string) {
   if (
     highlighter &&
     !highlighter.getLoadedThemes().includes(theme) &&
     !loadingThemes.has(theme) &&
-    theme in bundledThemes
+    isKnownTheme(theme)
   ) {
     loadingThemes.add(theme)
-    await highlighter.loadTheme(theme)
+    const themeToLoad = customThemeRegistry.get(theme) ?? theme
+    await highlighter.loadTheme(themeToLoad as BundledTheme)
     loadingThemes.delete(theme)
     return true
   }
@@ -102,11 +118,12 @@ export async function initHighlighter({
   defaultTheme,
   defaultLanguage,
   themeModes,
+  customThemes,
 }: {
   doc: ProsemirrorNode
   name: string
   defaultLanguage: BundledLanguage | null | undefined
-  defaultTheme: BundledTheme
+  defaultTheme: BundledTheme | (string & {})
   themeModes:
     | {
         light: BundledTheme
@@ -114,6 +131,7 @@ export async function initHighlighter({
       }
     | null
     | undefined
+  customThemes?: ThemeRegistration[]
 }) {
   const codeBlocks = findChildren(doc, (node) => node.type.name === name)
 
@@ -127,7 +145,7 @@ export async function initHighlighter({
   ]
 
   if (!highlighter) {
-    const themesToLoad: BundledTheme[] = [...themes]
+    const themesToLoad: (BundledTheme | string)[] = [...themes]
     if (themeModes) {
       if (themeModes.light && !themesToLoad.includes(themeModes.light)) {
         themesToLoad.push(themeModes.light)
@@ -140,6 +158,7 @@ export async function initHighlighter({
     const loader = loadHighlighter({
       languages,
       themes: themesToLoad,
+      customThemes,
     })
     await loader
   } else {

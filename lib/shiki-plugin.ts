@@ -2,7 +2,12 @@ import { findChildren, type NodeWithPos } from '@tiptap/core'
 import type { Node as ProsemirrorNode } from '@tiptap/pm/model'
 import { Plugin, PluginKey, type PluginView } from '@tiptap/pm/state'
 import { Decoration, DecorationSet } from '@tiptap/pm/view'
-import type { BundledLanguage, BundledTheme, TokensResult } from 'shiki'
+import type {
+  BundledLanguage,
+  BundledTheme,
+  ThemeRegistration,
+  TokensResult,
+} from 'shiki'
 import {
   getShiki,
   initHighlighter,
@@ -22,7 +27,7 @@ function getDecorations({
   doc: ProsemirrorNode
   name: string
   defaultLanguage: BundledLanguage | null | undefined
-  defaultTheme: BundledTheme
+  defaultTheme: BundledTheme | (string & {})
   themes:
     | {
         light: BundledTheme
@@ -134,10 +139,11 @@ export function ShikiPlugin({
   defaultLanguage,
   defaultTheme,
   themes,
+  customThemes,
 }: {
   name: string
   defaultLanguage: BundledLanguage | null | undefined
-  defaultTheme: BundledTheme
+  defaultTheme: BundledTheme | (string & {})
   themes:
     | {
         light: BundledTheme
@@ -145,6 +151,7 @@ export function ShikiPlugin({
       }
     | null
     | undefined
+  customThemes: ThemeRegistration[] | null | undefined
 }) {
   const shikiPlugin: Plugin<DecorationSet> = new Plugin({
     key: new PluginKey('shiki'),
@@ -171,6 +178,7 @@ export function ShikiPlugin({
             defaultLanguage,
             defaultTheme,
             themeModes: themes,
+            customThemes: customThemes ?? undefined,
           })
           const tr = view.state.tr.setMeta('shikiPluginForceDecoration', true)
           view.dispatch(tr)

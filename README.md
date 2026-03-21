@@ -82,6 +82,26 @@ html.dark .tiptap .shiki span {
 }
 ```
 
+### Custom Theme Support
+
+You can optionally supply your own custom themes
+
+```ts
+import type { ThemeRegistration } from 'shiki'
+
+const myTheme: ThemeRegistration = {
+  name: 'my-theme',
+  type: 'dark',
+  colors: { 'editor.background': '#1e1e2e' },
+  tokenColors: [/* ... */]
+}
+
+CodeBlockShiki.configure({
+  defaultTheme: 'my-theme',
+  customThemes: [myTheme],
+})
+```
+
 ## Demo
 
 I posted a small screen recording here: https://mastodon.social/@timomeh/112282962825285237
@@ -101,6 +121,10 @@ Optionally specify themes for light and dark mode. See https://shiki.matsu.io/gu
 ### `defaultLanguage`
 
 Which language to use, when no language was provided. See https://shiki.style/languages.
+
+### `customThemes`
+
+Register custom themes. See https://shiki.style/guide/load-theme#load-custom-themes.
 
 ## Notes
 

@@ -52,9 +52,9 @@ it('initializes tiptap with a custom theme', async () => {
   })
 
   expect(mount.innerHTML).toContain('background-color: #1e1e2e')
-  expect(mount.innerHTML).toContain('color: #CBA6F7;')  // keyword: function, return
-  expect(mount.innerHTML).toContain('color: #89B4FA;')  // entity.name.function: foo
-  expect(mount.innerHTML).toContain('color: #A6E3A1;')  // string: 'bar'
+  expect(mount.innerHTML).toContain('color: #CBA6F7;') // keyword: function, return
+  expect(mount.innerHTML).toContain('color: #89B4FA;') // entity.name.function: foo
+  expect(mount.innerHTML).toContain('color: #A6E3A1;') // string: 'bar'
 })
 
 it('uses custom theme alongside bundled theme', async () => {

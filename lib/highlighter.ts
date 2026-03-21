@@ -3,11 +3,11 @@ import type { Node as ProsemirrorNode } from '@tiptap/pm/model'
 import {
   type BundledLanguage,
   type BundledTheme,
-  type ThemeRegistration,
   bundledLanguages,
   bundledThemes,
   createHighlighter,
   type Highlighter,
+  type ThemeRegistration,
 } from 'shiki'
 
 let highlighter: Highlighter | undefined

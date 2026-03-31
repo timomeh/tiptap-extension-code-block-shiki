@@ -34,6 +34,7 @@
     "@microsoft/api-extractor": "^7.53.1",
     "@tiptap/core": "^3.21.0",
     "@tiptap/extension-code-block": "^3.21.0",
+    "@tiptap/markdown": "^3.21.0",
     "@tiptap/pm": "^3.21.0",
     "@tiptap/starter-kit": "^3.21.0",
     "@vitest/coverage-v8": "^3.2.4",

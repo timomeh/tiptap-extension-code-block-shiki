@@ -48,7 +48,7 @@ export const CodeBlockShiki = CodeBlock.extend<CodeBlockShikiOptions>({
     )
   },
 
-  renderMarkdown(node, h) {
+  renderMarkdown(node, h, _ctx) {
     const language = node.attrs?.language || ''
 
     if (!node.content) {

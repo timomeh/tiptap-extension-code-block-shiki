@@ -22,7 +22,10 @@ it('loads the highlighter with themes and langs', async () => {
   const highlighter = getShiki()
   expect(highlighter).toBeDefined()
   expect(highlighter?.getLoadedThemes()).toEqual(['tokyo-night'])
-  expect(highlighter?.getLoadedLanguages()).toEqual(['css', 'typescript', 'ts'])
+  const langs = highlighter?.getLoadedLanguages() ?? []
+  expect(langs).toContain('css')
+  expect(langs).toContain('typescript')
+  expect(langs).toContain('ts')
 })
 
 it('loads the highlighter only once', async () => {

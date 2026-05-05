@@ -201,7 +201,9 @@ describe('integration', () => {
       ],
     })
 
-    editor.commands.setContent('```\nhello world\n```', { contentType: 'markdown' })
+    editor.commands.setContent('```\nhello world\n```', {
+      contentType: 'markdown',
+    })
 
     const json = editor.getJSON()
     const codeBlock = json.content?.find((n) => n.type === 'codeBlock')

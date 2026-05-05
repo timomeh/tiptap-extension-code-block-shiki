@@ -55,7 +55,9 @@ export const CodeBlockShiki = CodeBlock.extend<CodeBlockShikiOptions>({
       return `\`\`\`${language}\n\n\`\`\``
     }
 
-    return [`\`\`\`${language}`, h.renderChildren(node.content), '```'].join('\n')
+    return [`\`\`\`${language}`, h.renderChildren(node.content), '```'].join(
+      '\n',
+    )
   },
 
   addProseMirrorPlugins() {
